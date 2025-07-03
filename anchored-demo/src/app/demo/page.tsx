@@ -189,7 +189,7 @@ const AnchoredDemo = () => {
         </div>
         <h1 className="text-4xl font-bold mb-4">Thank You!</h1>
         <p className="text-xl mb-8 text-blue-200">
-          You've shared your heart with the community
+          You&apos;ve shared your heart with the community
         </p>
         
         <div className="bg-white/10 backdrop-blur rounded-xl p-8 mb-8">

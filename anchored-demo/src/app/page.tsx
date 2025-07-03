@@ -35,7 +35,7 @@ const ComingSoonPage = () => {
               A Revolutionary Live Community Experience
             </p>
             <div className="text-sm text-gray-400 italic">
-              "We have this hope as an anchor for the soul, firm and secure." - Hebrews 6:19
+              &ldquo;We have this hope as an anchor for the soul, firm and secure.&rdquo; - Hebrews 6:19
             </div>
           </div>
 
