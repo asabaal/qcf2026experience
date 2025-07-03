@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../../lib/supabase';
 
 // Dynamically import Lucide icons to avoid hydration mismatches
 const Anchor = dynamic(() => import('lucide-react').then(mod => mod.Anchor), { ssr: false });
@@ -104,6 +104,9 @@ const AnchoredDemo = () => {
       console.log('🎉 Success! Participant created:', newParticipant);
       setSelectedMood(moodEmoji);
       setCurrentStep('complete');
+      
+      // Update the counter after successful submission
+      updateParticipantCount();
     } catch (error) {
       console.error('Failed to join session:', error);
       alert('Failed to join session. Please try again.');

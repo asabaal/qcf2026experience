@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React from 'react';
 import dynamic from 'next/dynamic';
 
 const Anchor = dynamic(() => import('lucide-react').then(mod => mod.Anchor), { ssr: false });
@@ -9,15 +9,6 @@ const Calendar = dynamic(() => import('lucide-react').then(mod => mod.Calendar),
 const Users = dynamic(() => import('lucide-react').then(mod => mod.Users), { ssr: false });
 
 const ComingSoonPage = () => {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleEmailSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // For now, just show success - could integrate with email service later
-    setSubmitted(true);
-    console.log('Email submitted:', email);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 text-white">
@@ -30,7 +21,7 @@ const ComingSoonPage = () => {
 
       {/* Main Content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center py-16">
           
           {/* Logo & Title */}
           <div className="mb-8">
@@ -67,7 +58,7 @@ const ComingSoonPage = () => {
           </div>
 
           {/* Features Preview */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="grid md:grid-cols-3 gap-6 mb-16">
             <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
               <Users className="w-8 h-8 text-blue-400 mx-auto mb-4" />
               <h3 className="font-semibold mb-2">Live Community</h3>
@@ -85,44 +76,12 @@ const ComingSoonPage = () => {
             </div>
           </div>
 
-          {/* Email Signup */}
-          {!submitted ? (
-            <div className="max-w-md mx-auto">
-              <p className="text-gray-300 mb-4">
-                Be the first to experience ANCHORED:
-              </p>
-              <form onSubmit={handleEmailSubmit} className="flex gap-3">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors"
-                >
-                  Notify Me
-                </button>
-              </form>
-            </div>
-          ) : (
-            <div className="max-w-md mx-auto bg-green-500/20 border border-green-500/50 rounded-lg p-6">
-              <div className="text-green-400 font-semibold mb-2">Thank you!</div>
-              <p className="text-green-200">We'll notify you when ANCHORED launches.</p>
-            </div>
-          )}
-
           {/* Footer */}
-          <div className="mt-16 text-sm text-gray-400">
+          <div className="mt-8 text-sm text-gray-400">
             <p>Built with ❤️ for meaningful human connection</p>
-            <div className="mt-4 space-x-6">
-              <a href="/demo" className="hover:text-white transition-colors">Demo</a>
-              <a href="/admin" className="hover:text-white transition-colors">Admin</a>
-            </div>
           </div>
+
+
         </div>
       </div>
     </div>

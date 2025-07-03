@@ -7,7 +7,11 @@ const AdminDashboard = () => {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [moodCounts, setMoodCounts] = useState<Record<string, number>>({});
   const [lastUpdate, setLastUpdate] = useState(new Date());
-  const [isClearing, setIsClearing] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const moodLabels: Record<string, string> = {
     '😌': 'Peaceful',
@@ -73,33 +77,6 @@ const AdminDashboard = () => {
     }
   };
 
-  const clearAllParticipants = async () => {
-    const confirmed = confirm('⚠️ Clear ALL participants? This cannot be undone.');
-    if (!confirmed) return;
-
-    setIsClearing(true);
-    try {
-      const { error } = await supabase
-        .from('participants')
-        .delete()
-        .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all (dummy condition)
-
-      if (error) {
-        console.error('Error clearing participants:', error);
-        alert('Failed to clear participants');
-        return;
-      }
-
-      console.log('🧹 All participants cleared');
-      loadParticipants();
-    } catch (error) {
-      console.error('Failed to clear participants:', error);
-      alert('Failed to clear participants');
-    } finally {
-      setIsClearing(false);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
       {/* Header */}
@@ -114,13 +91,15 @@ const AdminDashboard = () => {
           </div>
           <div className="text-right">
             <div className="text-sm text-gray-400">Last Update</div>
-            <div className="text-lg">{lastUpdate.toLocaleTimeString()}</div>
+            <div className="text-lg">
+              {mounted ? lastUpdate.toLocaleTimeString() : '--:--:--'}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {/* Total Participants */}
         <div className="bg-blue-600 rounded-xl p-6 text-center">
           <div className="text-4xl font-bold">{participants.length}</div>
@@ -135,21 +114,10 @@ const AdminDashboard = () => {
           <div className="text-purple-200">Most Popular Mood</div>
         </div>
 
-        {/* Recent Activity */}
+        {/* Session Status */}
         <div className="bg-green-600 rounded-xl p-6 text-center">
           <div className="text-2xl">✅</div>
           <div className="text-green-200">Live & Active</div>
-        </div>
-
-        {/* Clear Button */}
-        <div className="bg-red-600 rounded-xl p-6 text-center">
-          <button
-            onClick={clearAllParticipants}
-            disabled={isClearing}
-            className="text-white hover:bg-red-700 px-4 py-2 rounded transition-colors disabled:opacity-50"
-          >
-            {isClearing ? '🔄 Clearing...' : '🧹 Clear All'}
-          </button>
         </div>
       </div>
 
@@ -206,7 +174,7 @@ const AdminDashboard = () => {
                         {moodLabels[participant.mood_emoji] || 'Unknown'}
                       </div>
                       <div className="text-xs text-gray-400">
-                        {new Date(participant.joined_at).toLocaleTimeString()}
+                        {mounted ? new Date(participant.joined_at).toLocaleTimeString() : '--:--:--'}
                       </div>
                     </div>
                   </div>
@@ -248,7 +216,7 @@ const AdminDashboard = () => {
         <h2 className="text-xl font-bold mb-4">Debug Info</h2>
         <div className="text-sm text-gray-400 space-y-1 font-mono">
           <div>Total Participants: {participants.length}</div>
-          <div>Last Update: {lastUpdate.toISOString()}</div>
+          <div>Last Update: {mounted ? lastUpdate.toISOString() : 'Loading...'}</div>
           <div>Environment: {process.env.NODE_ENV}</div>
           <div className="mt-2 text-green-400">
             ✅ Real-time connection active
