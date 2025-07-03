@@ -9,7 +9,7 @@
 ---
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'background': '#0d1117', 'primaryColor': '#58a6ff', 'primaryTextColor': '#f0f6fc', 'primaryBorderColor': '#30363d', 'lineColor': '#f0f6fc', 'sectionBkColor': '#161b22', 'altSectionBkColor': '#21262d', 'gridColor': '#30363d', 'secondaryColor': '#ff7b72', 'tertiaryColor': '#56d364', 'quaternaryColor': '#d2a8ff', 'fontFamily': 'ui-monospace, monospace', 'fontSize': '14px'}}}%%
+%%{init: {'theme':'base', 'themeVariables': { 'background': '#000000', 'primaryColor': '#FF6B35', 'primaryTextColor': '#FFFFFF', 'primaryBorderColor': '#FF6B35', 'lineColor': '#00D9FF', 'sectionBkColor': '#2D5AA0', 'altSectionBkColor': '#8E44AD', 'gridColor': '#FFFFFF', 'secondaryColor': '#F39C12', 'tertiaryColor': '#27AE60', 'quaternaryColor': '#E74C3C', 'fontFamily': 'Arial Black, sans-serif', 'fontSize': '16px', 'fontWeight': 'bold'}}}%%
 erDiagram
     %% 🔥 PHASE 1: MVP 1.0 - CORE FOUNDATION
     sessions {
@@ -120,21 +120,21 @@ erDiagram
         boolean active "✅ ACTIVE"
     }
 
-    %% 🔗 RELATIONSHIPS - ONE-TO-MANY
-    sessions ||--o{ participants : "🔥 ONE_SESSION_HAS_MANY_PARTICIPANTS"
-    sessions ||--o{ words : "🔥 ONE_SESSION_CONTAINS_MANY_WORDS"
-    sessions ||--o{ groups : "✨ ONE_SESSION_ORGANIZES_MANY_GROUPS"
-    sessions ||--o{ verses : "✨ ONE_SESSION_CREATES_MANY_VERSES"
-    sessions ||--o{ ai_interactions : "✨ ONE_SESSION_HAS_MANY_AI_INTERACTIONS"
+    %% 🔗 RELATIONSHIPS
+    sessions ||--o{ participants : "HAS_MANY_PARTICIPANTS"
+    sessions ||--o{ words : "CONTAINS_MANY_WORDS"
+    sessions ||--o{ groups : "ORGANIZES_GROUPS"
+    sessions ||--o{ verses : "CREATES_VERSES"
+    sessions ||--o{ ai_interactions : "HAS_AI_INTERACTIONS"
     
-    participants ||--o{ words : "🔥 ONE_PARTICIPANT_SUBMITS_MANY_WORDS"
-    participants ||--o{ ai_interactions : "✨ ONE_PARTICIPANT_TRIGGERS_MANY_AI_CALLS"
+    participants ||--o{ words : "SUBMITS_WORDS"
+    participants ||--o{ ai_interactions : "TRIGGERS_AI"
     
-    groups ||--o{ verses : "✨ ONE_GROUP_CREATES_MANY_VERSES"
+    groups ||--o{ verses : "CREATES_VERSES"
     
-    user_profiles ||--o{ anchor_circles : "🚀 ONE_USER_CREATES_MANY_CIRCLES"
+    user_profiles ||--o{ anchor_circles : "CREATES_CIRCLES"
     
-    organizations ||--o{ sessions : "🌐 ONE_ORG_HOSTS_MANY_SESSIONS"
+    organizations ||--o{ sessions : "HOSTS_SESSIONS"
 ```
 
 ## 📋 Phase Priority
