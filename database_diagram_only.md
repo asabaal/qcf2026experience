@@ -9,131 +9,132 @@
 ---
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'background': '#1e1e2e', 'primaryColor': '#89b4fa', 'primaryTextColor': '#cdd6f4', 'primaryBorderColor': '#89b4fa', 'lineColor': '#6c7086', 'sectionBkColor': '#313244', 'altSectionBkColor': '#45475a', 'gridColor': '#585b70', 'secondaryColor': '#f38ba8', 'tertiaryColor': '#a6e3a1', 'quaternaryColor': '#cba6f7', 'fontFamily': 'ui-monospace, monospace'}}}%%
+%%{init: {'theme':'base', 'themeVariables': { 'background': '#0d1117', 'primaryColor': '#58a6ff', 'primaryTextColor': '#f0f6fc', 'primaryBorderColor': '#30363d', 'lineColor': '#f0f6fc', 'sectionBkColor': '#161b22', 'altSectionBkColor': '#21262d', 'gridColor': '#30363d', 'secondaryColor': '#ff7b72', 'tertiaryColor': '#56d364', 'quaternaryColor': '#d2a8ff', 'fontFamily': 'ui-monospace, monospace', 'fontSize': '14px'}}}%%
 erDiagram
-    %% 🔥 PHASE 1: MVP 1.0 - CORE FOUNDATION (RED)
+    %% 🔥 PHASE 1: MVP 1.0 - CORE FOUNDATION
     sessions {
-        uuid id PK "🔑"
-        text name "📋"
-        text event_code "🎯"
-        boolean active "✅"
-        integer participant_count "👥"
-        timestamp created_at "📅"
-        timestamp updated_at "🔄"
-        text status "📊"
-        json metadata "📦"
+        uuid id PK "🔑 PRIMARY_KEY"
+        text name "📋 SESSION_NAME"
+        text event_code "🎯 QR_CODE_ID"
+        boolean active "✅ IS_LIVE"
+        integer participant_count "👥 LIVE_COUNT"
+        timestamp created_at "📅 CREATED"
+        timestamp updated_at "🔄 UPDATED"
+        text status "📊 STATUS"
+        json metadata "📦 EXTRA_DATA"
     }
     
     participants {
-        uuid id PK "🔑"
-        uuid session_id FK "🔗"
-        text mood_emoji "😊"
-        text mood_label "🏷️"
-        text user_agent "📱"
-        text ip_address_hash "🔒"
-        timestamp joined_at "⏰"
-        timestamp last_active "💫"
-        boolean is_active "🟢"
-        json metadata "📦"
+        uuid id PK "🔑 PRIMARY_KEY"
+        uuid session_id FK "🔗 SESSION_LINK"
+        text mood_emoji "😊 USER_MOOD"
+        text mood_label "🏷️ MOOD_TEXT"
+        text user_agent "📱 DEVICE_INFO"
+        text ip_address_hash "🔒 PRIVACY_HASH"
+        timestamp joined_at "⏰ JOIN_TIME"
+        timestamp last_active "💫 LAST_SEEN"
+        boolean is_active "🟢 ONLINE"
+        json metadata "📦 EXTRA_DATA"
     }
     
     words {
-        uuid id PK "🔑"
-        uuid session_id FK "🔗"
-        uuid participant_id FK "👤"
-        text content "💬"
-        text mood_context "🎭"
-        integer display_order "🎯"
-        timestamp created_at "📅"
-        boolean approved "✅"
-        text status "📊"
+        uuid id PK "🔑 PRIMARY_KEY"
+        uuid session_id FK "🔗 SESSION_LINK"
+        uuid participant_id FK "👤 AUTHOR"
+        text content "💬 WORD_CONTENT"
+        text mood_context "🎭 MOOD_CONTEXT"
+        integer display_order "🎯 ORDER"
+        timestamp created_at "📅 CREATED"
+        boolean approved "✅ APPROVED"
+        text status "📊 STATUS"
     }
     
-    %% ✨ PHASE 2: MVP 2.0 - AI MAGIC (BLUE)
+    %% ✨ PHASE 2: MVP 2.0 - AI MAGIC
     groups {
-        uuid id PK "🔑"
-        uuid session_id FK "🔗"
-        text name "👥"
-        text formation_method "🧠"
-        integer max_size "📏"
-        timestamp created_at "📅"
-        boolean active "✅"
-        json metadata "📦"
+        uuid id PK "🔑 PRIMARY_KEY"
+        uuid session_id FK "🔗 SESSION_LINK"
+        text name "👥 GROUP_NAME"
+        text formation_method "🧠 AI_METHOD"
+        integer max_size "📏 MAX_SIZE"
+        timestamp created_at "📅 CREATED"
+        boolean active "✅ ACTIVE"
+        json metadata "📦 EXTRA_DATA"
     }
     
     verses {
-        uuid id PK "🔑"
-        uuid session_id FK "🔗"
-        uuid group_id FK "👥"
-        text content "🎵"
-        text verse_number "🔢"
-        text theme "🎨"
-        timestamp created_at "📅"
-        text status "📊"
-        json ai_metadata "🤖"
+        uuid id PK "🔑 PRIMARY_KEY"
+        uuid session_id FK "🔗 SESSION_LINK"
+        uuid group_id FK "👥 GROUP_LINK"
+        text content "🎵 VERSE_TEXT"
+        text verse_number "🔢 VERSE_NUMBER"
+        text theme "🎨 THEME"
+        timestamp created_at "📅 CREATED"
+        text status "📊 STATUS"
+        json ai_metadata "🤖 AI_DATA"
     }
     
     ai_interactions {
-        uuid id PK "🔑"
-        uuid session_id FK "🔗"
-        uuid participant_id FK "👤"
-        text interaction_type "🤖"
-        text prompt "💭"
-        text response "🎯"
-        text model_used "🧠"
-        timestamp created_at "📅"
-        json metadata "📦"
+        uuid id PK "🔑 PRIMARY_KEY"
+        uuid session_id FK "🔗 SESSION_LINK"
+        uuid participant_id FK "👤 USER_LINK"
+        text interaction_type "🤖 AI_TYPE"
+        text prompt "💭 INPUT"
+        text response "🎯 OUTPUT"
+        text model_used "🧠 AI_MODEL"
+        timestamp created_at "📅 CREATED"
+        json metadata "📦 EXTRA_DATA"
     }
     
-    %% 🚀 PHASE 3: MVP 3.0 - COMMUNITY (GREEN)
+    %% 🚀 PHASE 3: MVP 3.0 - COMMUNITY
     user_profiles {
-        uuid id PK "🔑"
-        text email "📧"
-        text name "👤"
-        text anchor_story "⚓"
-        text commitment "🤝"
-        text location "📍"
-        timestamp created_at "📅"
-        timestamp updated_at "🔄"
-        boolean active "✅"
-        json preferences "⚙️"
+        uuid id PK "🔑 PRIMARY_KEY"
+        text email "📧 EMAIL"
+        text name "👤 NAME"
+        text anchor_story "⚓ STORY"
+        text commitment "🤝 PROMISE"
+        text location "📍 LOCATION"
+        timestamp created_at "📅 CREATED"
+        timestamp updated_at "🔄 UPDATED"
+        boolean active "✅ ACTIVE"
+        json preferences "⚙️ SETTINGS"
     }
     
     anchor_circles {
-        uuid id PK "🔑"
-        text name "⚓"
-        text description "📝"
-        uuid creator_id FK "👤"
-        timestamp created_at "📅"
-        boolean active "✅"
-        json settings "⚙️"
+        uuid id PK "🔑 PRIMARY_KEY"
+        text name "⚓ CIRCLE_NAME"
+        text description "📝 DESCRIPTION"
+        uuid creator_id FK "👤 CREATOR_LINK"
+        timestamp created_at "📅 CREATED"
+        boolean active "✅ ACTIVE"
+        json settings "⚙️ CONFIG"
     }
     
-    %% 🌐 PHASE 4: PLATFORM - ENTERPRISE (PURPLE)
+    %% 🌐 PHASE 4: PLATFORM - ENTERPRISE
     organizations {
-        uuid id PK "🔑"
-        text name "🏢"
-        text domain "🌐"
-        text subscription_tier "💳"
-        json settings "⚙️"
-        timestamp created_at "📅"
-        boolean active "✅"
+        uuid id PK "🔑 PRIMARY_KEY"
+        text name "🏢 ORG_NAME"
+        text domain "🌐 DOMAIN"
+        text subscription_tier "💳 PLAN"
+        json settings "⚙️ CONFIG"
+        timestamp created_at "📅 CREATED"
+        boolean active "✅ ACTIVE"
     }
 
-    %% 🔗 KEY RELATIONSHIPS
-    sessions ||--o{ participants : "👥"
-    sessions ||--o{ words : "💬"
-    sessions ||--o{ groups : "🎯"
-    sessions ||--o{ verses : "🎵"
+    %% 🔗 RELATIONSHIPS - ONE-TO-MANY
+    sessions ||--o{ participants : "🔥 ONE_SESSION_HAS_MANY_PARTICIPANTS"
+    sessions ||--o{ words : "🔥 ONE_SESSION_CONTAINS_MANY_WORDS"
+    sessions ||--o{ groups : "✨ ONE_SESSION_ORGANIZES_MANY_GROUPS"
+    sessions ||--o{ verses : "✨ ONE_SESSION_CREATES_MANY_VERSES"
+    sessions ||--o{ ai_interactions : "✨ ONE_SESSION_HAS_MANY_AI_INTERACTIONS"
     
-    participants ||--o{ words : "✍️"
-    participants ||--o{ ai_interactions : "🤖"
+    participants ||--o{ words : "🔥 ONE_PARTICIPANT_SUBMITS_MANY_WORDS"
+    participants ||--o{ ai_interactions : "✨ ONE_PARTICIPANT_TRIGGERS_MANY_AI_CALLS"
     
-    groups ||--o{ verses : "🎵"
+    groups ||--o{ verses : "✨ ONE_GROUP_CREATES_MANY_VERSES"
     
-    user_profiles ||--o{ anchor_circles : "⚓"
+    user_profiles ||--o{ anchor_circles : "🚀 ONE_USER_CREATES_MANY_CIRCLES"
     
-    organizations ||--o{ sessions : "🎯"
+    organizations ||--o{ sessions : "🌐 ONE_ORG_HOSTS_MANY_SESSIONS"
 ```
 
 ## 📋 Phase Priority
