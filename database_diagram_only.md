@@ -9,7 +9,7 @@
 ---
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'background': '#000000', 'primaryColor': '#FF6B35', 'primaryTextColor': '#FFFFFF', 'primaryBorderColor': '#FF6B35', 'lineColor': '#00D9FF', 'sectionBkColor': '#2D5AA0', 'altSectionBkColor': '#8E44AD', 'gridColor': '#FFFFFF', 'secondaryColor': '#F39C12', 'tertiaryColor': '#27AE60', 'quaternaryColor': '#E74C3C', 'fontFamily': 'Arial Black, sans-serif', 'fontSize': '16px', 'fontWeight': 'bold'}}}%%
+%%{init: {'theme':'base', 'themeVariables': { 'background': '#0a0e27', 'primaryColor': '#4f8ef7', 'primaryTextColor': '#ffffff', 'primaryBorderColor': '#4f8ef7', 'lineColor': '#64b5f6', 'sectionBkColor': '#1e3a8a', 'altSectionBkColor': '#3b82f6', 'gridColor': '#ffffff', 'secondaryColor': '#06b6d4', 'tertiaryColor': '#10b981', 'quaternaryColor': '#8b5cf6', 'fontFamily': 'Arial, sans-serif', 'fontSize': '13px'}}}%%
 erDiagram
     %% 🔥 PHASE 1: MVP 1.0 - CORE FOUNDATION
     sessions {
@@ -120,21 +120,23 @@ erDiagram
         boolean active "✅ ACTIVE"
     }
 
-    %% 🔗 RELATIONSHIPS
-    sessions ||--o{ participants : "HAS_MANY_PARTICIPANTS"
-    sessions ||--o{ words : "CONTAINS_MANY_WORDS"
-    sessions ||--o{ groups : "ORGANIZES_GROUPS"
-    sessions ||--o{ verses : "CREATES_VERSES"
-    sessions ||--o{ ai_interactions : "HAS_AI_INTERACTIONS"
+    %% 🔗 CORE RELATIONSHIPS (MVP 1.0)
+    sessions ||--o{ participants : "has participants"
+    sessions ||--o{ words : "contains words"
+    participants ||--o{ words : "submits words"
     
-    participants ||--o{ words : "SUBMITS_WORDS"
-    participants ||--o{ ai_interactions : "TRIGGERS_AI"
+    %% 🔗 AI RELATIONSHIPS (MVP 2.0)  
+    sessions ||--o{ groups : "organizes groups"
+    sessions ||--o{ verses : "creates verses"
+    sessions ||--o{ ai_interactions : "has AI calls"
+    participants ||--o{ ai_interactions : "triggers AI"
+    groups ||--o{ verses : "creates verses"
     
-    groups ||--o{ verses : "CREATES_VERSES"
+    %% 🔗 COMMUNITY RELATIONSHIPS (MVP 3.0)
+    user_profiles ||--o{ anchor_circles : "creates circles"
     
-    user_profiles ||--o{ anchor_circles : "CREATES_CIRCLES"
-    
-    organizations ||--o{ sessions : "HOSTS_SESSIONS"
+    %% 🔗 PLATFORM RELATIONSHIPS (Enterprise)
+    organizations ||--o{ sessions : "hosts sessions"
 ```
 
 ## 📋 Phase Priority
