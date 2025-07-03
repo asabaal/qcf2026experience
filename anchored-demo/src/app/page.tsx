@@ -1,235 +1,134 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { supabase } from '../lib/supabase';
 
-// Dynamically import Lucide icons to avoid hydration mismatches
 const Anchor = dynamic(() => import('lucide-react').then(mod => mod.Anchor), { ssr: false });
-const QrCode = dynamic(() => import('lucide-react').then(mod => mod.QrCode), { ssr: false });
 const Sparkles = dynamic(() => import('lucide-react').then(mod => mod.Sparkles), { ssr: false });
+const Calendar = dynamic(() => import('lucide-react').then(mod => mod.Calendar), { ssr: false });
 const Users = dynamic(() => import('lucide-react').then(mod => mod.Users), { ssr: false });
 
-const AnchoredDemo = () => {
-  const [currentStep, setCurrentStep] = useState('landing');
-  const [selectedMood, setSelectedMood] = useState('');
-  const [mounted, setMounted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [participantCount, setParticipantCount] = useState(0);
+const ComingSoonPage = () => {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
-  // Mood options
-  const moodOptions = [
-    { emoji: '😌', label: 'Peaceful' },
-    { emoji: '💪', label: 'Strong' },
-    { emoji: '🤗', label: 'Hopeful' },
-    { emoji: '😔', label: 'Struggling' },
-    { emoji: '🙏', label: 'Grateful' },
-    { emoji: '❤️', label: 'Loved' },
-    { emoji: '🤔', label: 'Searching' },
-    { emoji: '✨', label: 'Joyful' }
-  ];
-
-  useEffect(() => {
-    setMounted(true);
-    updateParticipantCount();
-  }, []);
-
-  // Set up real-time subscription to watch for new participants
-  useEffect(() => {
-    const subscription = supabase
-      .channel('participants-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'participants'
-        },
-        () => {
-          console.log('🔄 Participants changed, updating count');
-          updateParticipantCount();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(subscription);
-    };
-  }, []);
-
-  const updateParticipantCount = async () => {
-    try {
-      console.log('🔍 Counting participants...');
-      
-      const { count, error } = await supabase
-        .from('participants')
-        .select('*', { count: 'exact', head: true });
-
-      console.log('📊 Participant count result:', { count, error });
-
-      if (error) {
-        console.error('Error counting participants:', error);
-        return;
-      }
-
-      setParticipantCount(count || 0);
-      console.log('✅ Updated participant count to:', count);
-
-    } catch (error) {
-      console.error('Failed to update participant count:', error);
-    }
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // For now, just show success - could integrate with email service later
+    setSubmitted(true);
+    console.log('Email submitted:', email);
   };
 
-  const joinWithMood = async (moodEmoji: string) => {
-    console.log('🔥 About to insert participant with mood:', moodEmoji);
-
-    setLoading(true);
-    try {
-      const { data: newParticipant, error } = await supabase
-        .from('participants')
-        .insert([{
-          mood_emoji: moodEmoji
-        }])
-        .select()
-        .single();
-
-      console.log('✅ Insert result:', { newParticipant, error });
-
-      if (error) {
-        console.error('❌ Database error:', error);
-        alert('Failed to join session. Please try again.');
-        return;
-      }
-
-      console.log('🎉 Success! Participant created:', newParticipant);
-      setSelectedMood(moodEmoji);
-      setCurrentStep('complete');
-    } catch (error) {
-      console.error('Failed to join session:', error);
-      alert('Failed to join session. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const renderLanding = () => (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full text-center">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 mb-8">
-          <div className="text-6xl mb-4">⚓</div>
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">ANCHORED</h1>
-          <p className="text-gray-600 mb-4">Live Experience</p>
-          <div className="text-sm text-gray-500 border-t pt-4">
-            &ldquo;We have this hope as an anchor for the soul, firm and secure.&rdquo;<br/>
-            <em>- Hebrews 6:19</em>
-          </div>
-        </div>
-        
-        <div className="text-white text-center">
-          <QrCode className="w-16 h-16 mx-auto mb-4 opacity-75" />
-          <p className="text-lg mb-6">Tap your phone to this card or scan QR code</p>
-          <button 
-            onClick={() => setCurrentStep('mood')}
-            className="bg-white text-blue-900 px-8 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-colors flex items-center gap-2 mx-auto"
-          >
-            <Sparkles className="w-5 h-5" />
-            Share How You Feel
-          </button>
-        </div>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 text-white">
+      {/* Background Effects */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
       </div>
-    </div>
-  );
 
-  const renderMoodSelection = () => (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100 p-4">
-      <div className="max-w-2xl mx-auto pt-8">
-        <div className="text-center mb-8">
-          <Anchor className="w-16 h-16 mx-auto text-purple-600 mb-4" />
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">How are you feeling today?</h1>
-          <p className="text-gray-600">Choose the emoji that best represents your heart right now</p>
+      {/* Main Content */}
+      <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+        <div className="max-w-4xl mx-auto text-center">
           
-          {/* Live Counter */}
-          <div className="bg-white rounded-xl shadow-lg p-4 mt-6 mb-6">
-            <div className="flex items-center justify-center gap-2 text-purple-600">
-              <Users className="w-6 h-6" />
-              <span className="text-2xl font-bold">{participantCount}</span>
-              <span className="text-lg">people are here with you</span>
+          {/* Logo & Title */}
+          <div className="mb-8">
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <Anchor className="w-16 h-16 text-yellow-400" />
+              <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-yellow-400 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+                ANCHORED
+              </h1>
+            </div>
+            <p className="text-xl md:text-2xl text-gray-300 mb-4">
+              A Revolutionary Live Community Experience
+            </p>
+            <div className="text-sm text-gray-400 italic">
+              "We have this hope as an anchor for the soul, firm and secure." - Hebrews 6:19
+            </div>
+          </div>
+
+          {/* Coming Soon Badge */}
+          <div className="inline-flex items-center gap-2 bg-yellow-500/20 border border-yellow-500/50 rounded-full px-6 py-3 mb-8">
+            <Sparkles className="w-5 h-5 text-yellow-400" />
+            <span className="font-semibold text-yellow-200">Coming Soon</span>
+          </div>
+
+          {/* Description */}
+          <div className="max-w-2xl mx-auto mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6">
+              Where Technology Serves Soul
+            </h2>
+            <p className="text-lg text-gray-300 leading-relaxed">
+              Experience the future of human connection. Share your heart, create together, 
+              and discover the anchor that holds us all. A live, interactive experience 
+              that transforms strangers into community.
+            </p>
+          </div>
+
+          {/* Features Preview */}
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+              <Users className="w-8 h-8 text-blue-400 mx-auto mb-4" />
+              <h3 className="font-semibold mb-2">Live Community</h3>
+              <p className="text-sm text-gray-300">Connect with dozens of people in real-time</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+              <Sparkles className="w-8 h-8 text-purple-400 mx-auto mb-4" />
+              <h3 className="font-semibold mb-2">AI-Powered</h3>
+              <p className="text-sm text-gray-300">Smart assistance helps create something beautiful together</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+              <Calendar className="w-8 h-8 text-green-400 mx-auto mb-4" />
+              <h3 className="font-semibold mb-2">QCF 2026</h3>
+              <p className="text-sm text-gray-300">Premiering at the Quarterly Christian Fellowship conference</p>
+            </div>
+          </div>
+
+          {/* Email Signup */}
+          {!submitted ? (
+            <div className="max-w-md mx-auto">
+              <p className="text-gray-300 mb-4">
+                Be the first to experience ANCHORED:
+              </p>
+              <form onSubmit={handleEmailSubmit} className="flex gap-3">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="flex-1 px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors"
+                >
+                  Notify Me
+                </button>
+              </form>
+            </div>
+          ) : (
+            <div className="max-w-md mx-auto bg-green-500/20 border border-green-500/50 rounded-lg p-6">
+              <div className="text-green-400 font-semibold mb-2">Thank you!</div>
+              <p className="text-green-200">We'll notify you when ANCHORED launches.</p>
+            </div>
+          )}
+
+          {/* Footer */}
+          <div className="mt-16 text-sm text-gray-400">
+            <p>Built with ❤️ for meaningful human connection</p>
+            <div className="mt-4 space-x-6">
+              <a href="/demo" className="hover:text-white transition-colors">Demo</a>
+              <a href="/admin" className="hover:text-white transition-colors">Admin</a>
             </div>
           </div>
         </div>
-
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {moodOptions.map((mood) => (
-              <button
-                key={mood.emoji}
-                onClick={() => joinWithMood(mood.emoji)}
-                disabled={loading}
-                className="p-6 rounded-xl border-2 border-gray-200 hover:border-purple-300 transition-all text-center hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <div className="text-5xl mb-2">{mood.emoji}</div>
-                <div className="font-semibold text-gray-800">{mood.label}</div>
-              </button>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );
-
-  const renderComplete = () => (
-    <div className="min-h-screen bg-gradient-to-br from-green-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full text-center text-white">
-        <div className="flex items-center justify-center gap-4 mb-6">
-          <span className="text-8xl">{selectedMood}</span>
-          <div className="text-8xl">⚓</div>
-        </div>
-        <h1 className="text-4xl font-bold mb-4">Thank You!</h1>
-        <p className="text-xl mb-8 text-blue-200">
-          You've shared your heart with the community
-        </p>
-        
-        <div className="bg-white/10 backdrop-blur rounded-xl p-8 mb-8">
-          <div className="flex items-center justify-center gap-2 text-green-400 mb-4">
-            <Users className="w-8 h-8" />
-            <span className="text-3xl font-bold">{participantCount}</span>
-            <span className="text-xl">people connected</span>
-          </div>
-          <p className="text-blue-200">
-            Your mood is now part of something bigger
-          </p>
-        </div>
-
-        <button
-          onClick={() => {
-            setCurrentStep('landing');
-            setSelectedMood('');
-          }}
-          className="bg-white text-purple-900 px-8 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-colors"
-        >
-          Experience Again
-        </button>
-      </div>
-    </div>
-  );
-
-  const steps = {
-    landing: renderLanding,
-    mood: renderMoodSelection,
-    complete: renderComplete
-  };
-
-  if (!mounted) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-2xl">Loading...</div>
-      </div>
-    );
-  }
-
-  return steps[currentStep]();
 };
 
-export default function Page() {
-  return <AnchoredDemo />;
+export default function HomePage() {
+  return <ComingSoonPage />;
 }
