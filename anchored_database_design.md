@@ -34,222 +34,223 @@
 ## 📊 Database Entity Relationship Diagram
 
 ```mermaid
+%%{init: {'theme':'dark', 'themeVariables': { 'darkMode': true, 'background': '#0f1419', 'primaryColor': '#4f46e5', 'primaryTextColor': '#e2e8f0', 'primaryBorderColor': '#6366f1', 'lineColor': '#64748b', 'sectionBkColor': '#1e293b', 'altSectionBkColor': '#334155', 'gridColor': '#475569', 'secondaryColor': '#06b6d4', 'tertiaryColor': '#8b5cf6'}}}%%
 erDiagram
-    %% PHASE 1: MVP 1.0 TABLES
+    %% 🔥 PHASE 1: MVP 1.0 TABLES (CORE FOUNDATION)
     sessions {
-        uuid id PK
-        text name
-        text event_code
-        boolean active
-        integer participant_count
-        timestamp created_at
-        timestamp updated_at
-        text status
-        json metadata
+        uuid id PK "🔑 Primary Key"
+        text name "📋 Session Name"
+        text event_code "🎯 QR Code ID"
+        boolean active "✅ Is Live"
+        integer participant_count "👥 Live Count"
+        timestamp created_at "📅 Created"
+        timestamp updated_at "🔄 Updated"
+        text status "📊 Status"
+        json metadata "📦 Extra Data"
     }
     
     participants {
-        uuid id PK
-        uuid session_id FK
-        text mood_emoji
-        text mood_label
-        text user_agent
-        text ip_address_hash
-        timestamp joined_at
-        timestamp last_active
-        boolean is_active
-        json metadata
+        uuid id PK "🔑 Primary Key"
+        uuid session_id FK "🔗 Session Link"
+        text mood_emoji "😊 User Mood"
+        text mood_label "🏷️ Mood Text"
+        text user_agent "📱 Device Info"
+        text ip_address_hash "🔒 Privacy Hash"
+        timestamp joined_at "⏰ Join Time"
+        timestamp last_active "💫 Last Seen"
+        boolean is_active "🟢 Online"
+        json metadata "📦 Extra Data"
     }
     
     words {
-        uuid id PK
-        uuid session_id FK
-        uuid participant_id FK
-        text content
-        text mood_context
-        integer display_order
-        timestamp created_at
-        boolean approved
-        text status
+        uuid id PK "🔑 Primary Key"
+        uuid session_id FK "🔗 Session Link"
+        uuid participant_id FK "👤 Author"
+        text content "💬 Word Content"
+        text mood_context "🎭 Mood Context"
+        integer display_order "🎯 Order"
+        timestamp created_at "📅 Created"
+        boolean approved "✅ Approved"
+        text status "📊 Status"
     }
     
-    %% PHASE 2: MVP 2.0 TABLES
+    %% ✨ PHASE 2: MVP 2.0 TABLES (AI MAGIC)
     groups {
-        uuid id PK
-        uuid session_id FK
-        text name
-        text formation_method
-        integer max_size
-        timestamp created_at
-        boolean active
-        json metadata
+        uuid id PK "🔑 Primary Key"
+        uuid session_id FK "🔗 Session Link"
+        text name "👥 Group Name"
+        text formation_method "🧠 AI Method"
+        integer max_size "📏 Max Size"
+        timestamp created_at "📅 Created"
+        boolean active "✅ Active"
+        json metadata "📦 Extra Data"
     }
     
     group_members {
-        uuid id PK
-        uuid group_id FK
-        uuid participant_id FK
-        text role
-        timestamp joined_at
-        boolean active
+        uuid id PK "🔑 Primary Key"
+        uuid group_id FK "👥 Group Link"
+        uuid participant_id FK "👤 Member"
+        text role "🎭 Role"
+        timestamp joined_at "⏰ Joined"
+        boolean active "🟢 Active"
     }
     
     verses {
-        uuid id PK
-        uuid session_id FK
-        uuid group_id FK
-        text content
-        text verse_number
-        text theme
-        timestamp created_at
-        text status
-        json ai_metadata
+        uuid id PK "🔑 Primary Key"
+        uuid session_id FK "🔗 Session Link"
+        uuid group_id FK "👥 Group"
+        text content "🎵 Verse Text"
+        text verse_number "🔢 Verse #"
+        text theme "🎨 Theme"
+        timestamp created_at "📅 Created"
+        text status "📊 Status"
+        json ai_metadata "🤖 AI Data"
     }
     
     verse_contributions {
-        uuid id PK
-        uuid verse_id FK
-        uuid participant_id FK
-        text line_content
-        integer line_number
-        timestamp created_at
-        boolean approved
-        text source_type
+        uuid id PK "🔑 Primary Key"
+        uuid verse_id FK "🎵 Verse Link"
+        uuid participant_id FK "👤 Author"
+        text line_content "📝 Line Text"
+        integer line_number "🔢 Line #"
+        timestamp created_at "📅 Created"
+        boolean approved "✅ Approved"
+        text source_type "🎯 Source"
     }
     
     votes {
-        uuid id PK
-        uuid participant_id FK
-        uuid target_id
-        text target_type
-        text vote_type
-        integer value
-        timestamp created_at
-        json metadata
+        uuid id PK "🔑 Primary Key"
+        uuid participant_id FK "👤 Voter"
+        uuid target_id "🎯 Target"
+        text target_type "📋 Type"
+        text vote_type "👍 Vote Kind"
+        integer value "🔢 Value"
+        timestamp created_at "📅 Created"
+        json metadata "📦 Extra Data"
     }
     
     ai_interactions {
-        uuid id PK
-        uuid session_id FK
-        uuid participant_id FK
-        text interaction_type
-        text prompt
-        text response
-        text model_used
-        timestamp created_at
-        json metadata
+        uuid id PK "🔑 Primary Key"
+        uuid session_id FK "🔗 Session Link"
+        uuid participant_id FK "👤 User"
+        text interaction_type "🤖 AI Type"
+        text prompt "💭 Input"
+        text response "🎯 Output"
+        text model_used "🧠 AI Model"
+        timestamp created_at "📅 Created"
+        json metadata "📦 Extra Data"
     }
     
-    %% PHASE 3: MVP 3.0 TABLES
+    %% 🚀 PHASE 3: MVP 3.0 TABLES (COMMUNITY)
     user_profiles {
-        uuid id PK
-        text email
-        text name
-        text anchor_story
-        text commitment
-        text location
-        timestamp created_at
-        timestamp updated_at
-        boolean active
-        json preferences
+        uuid id PK "🔑 Primary Key"
+        text email "📧 Email"
+        text name "👤 Name"
+        text anchor_story "⚓ Story"
+        text commitment "🤝 Promise"
+        text location "📍 Location"
+        timestamp created_at "📅 Created"
+        timestamp updated_at "🔄 Updated"
+        boolean active "✅ Active"
+        json preferences "⚙️ Settings"
     }
     
     connections {
-        uuid id PK
-        uuid user1_id FK
-        uuid user2_id FK
-        text connection_type
-        text status
-        timestamp created_at
-        timestamp updated_at
-        json metadata
+        uuid id PK "🔑 Primary Key"
+        uuid user1_id FK "👤 User 1"
+        uuid user2_id FK "👤 User 2"
+        text connection_type "🔗 Type"
+        text status "📊 Status"
+        timestamp created_at "📅 Created"
+        timestamp updated_at "🔄 Updated"
+        json metadata "📦 Extra Data"
     }
     
     anchor_circles {
-        uuid id PK
-        text name
-        text description
-        uuid creator_id FK
-        timestamp created_at
-        boolean active
-        json settings
+        uuid id PK "🔑 Primary Key"
+        text name "⚓ Circle Name"
+        text description "📝 Description"
+        uuid creator_id FK "👤 Creator"
+        timestamp created_at "📅 Created"
+        boolean active "✅ Active"
+        json settings "⚙️ Config"
     }
     
     circle_members {
-        uuid id PK
-        uuid circle_id FK
-        uuid user_id FK
-        text role
-        timestamp joined_at
-        boolean active
+        uuid id PK "🔑 Primary Key"
+        uuid circle_id FK "⚓ Circle"
+        uuid user_id FK "👤 Member"
+        text role "🎭 Role"
+        timestamp joined_at "⏰ Joined"
+        boolean active "✅ Active"
     }
     
     prayer_requests {
-        uuid id PK
-        uuid user_id FK
-        uuid circle_id FK
-        text content
-        text category
-        text status
-        timestamp created_at
-        timestamp updated_at
-        boolean anonymous
+        uuid id PK "🔑 Primary Key"
+        uuid user_id FK "👤 Requester"
+        uuid circle_id FK "⚓ Circle"
+        text content "🙏 Request"
+        text category "📋 Category"
+        text status "📊 Status"
+        timestamp created_at "📅 Created"
+        timestamp updated_at "🔄 Updated"
+        boolean anonymous "🔒 Private"
     }
     
-    %% PHASE 4: PLATFORM TABLES
+    %% 🌐 PHASE 4: PLATFORM TABLES (ENTERPRISE)
     organizations {
-        uuid id PK
-        text name
-        text domain
-        text subscription_tier
-        json settings
-        timestamp created_at
-        boolean active
+        uuid id PK "🔑 Primary Key"
+        text name "🏢 Org Name"
+        text domain "🌐 Domain"
+        text subscription_tier "💳 Plan"
+        json settings "⚙️ Config"
+        timestamp created_at "📅 Created"
+        boolean active "✅ Active"
     }
     
     organization_users {
-        uuid id PK
-        uuid organization_id FK
-        uuid user_id FK
-        text role
-        timestamp created_at
-        boolean active
+        uuid id PK "🔑 Primary Key"
+        uuid organization_id FK "🏢 Org Link"
+        uuid user_id FK "👤 User"
+        text role "🎭 Role"
+        timestamp created_at "📅 Created"
+        boolean active "✅ Active"
     }
     
     analytics_events {
-        uuid id PK
-        uuid session_id FK
-        uuid participant_id FK
-        uuid organization_id FK
-        text event_type
-        text event_name
-        json properties
-        timestamp created_at
+        uuid id PK "🔑 Primary Key"
+        uuid session_id FK "🔗 Session"
+        uuid participant_id FK "👤 User"
+        uuid organization_id FK "🏢 Org"
+        text event_type "📊 Type"
+        text event_name "🏷️ Name"
+        json properties "📦 Data"
+        timestamp created_at "📅 Created"
     }
 
-    %% RELATIONSHIPS
-    sessions ||--o{ participants : "has"
-    sessions ||--o{ words : "contains"
-    sessions ||--o{ groups : "organizes"
-    sessions ||--o{ verses : "creates"
+    %% 🔗 RELATIONSHIPS (COLOR-CODED BY PHASE)
+    sessions ||--o{ participants : "👥 has"
+    sessions ||--o{ words : "💬 contains"
+    sessions ||--o{ groups : "🎯 organizes"
+    sessions ||--o{ verses : "🎵 creates"
     
-    participants ||--o{ words : "submits"
-    participants ||--o{ votes : "casts"
-    participants ||--o{ ai_interactions : "triggers"
-    participants ||--o{ verse_contributions : "contributes"
+    participants ||--o{ words : "✍️ submits"
+    participants ||--o{ votes : "👍 casts"
+    participants ||--o{ ai_interactions : "🤖 triggers"
+    participants ||--o{ verse_contributions : "📝 contributes"
     
-    groups ||--o{ group_members : "contains"
-    groups ||--o{ verses : "creates"
+    groups ||--o{ group_members : "👥 contains"
+    groups ||--o{ verses : "🎵 creates"
     
-    verses ||--o{ verse_contributions : "receives"
+    verses ||--o{ verse_contributions : "📝 receives"
     
-    user_profiles ||--o{ connections : "connects"
-    user_profiles ||--o{ anchor_circles : "creates"
-    user_profiles ||--o{ circle_members : "joins"
-    user_profiles ||--o{ prayer_requests : "submits"
+    user_profiles ||--o{ connections : "🔗 connects"
+    user_profiles ||--o{ anchor_circles : "⚓ creates"
+    user_profiles ||--o{ circle_members : "👥 joins"
+    user_profiles ||--o{ prayer_requests : "🙏 submits"
     
-    organizations ||--o{ organization_users : "employs"
-    organizations ||--o{ sessions : "hosts"
+    organizations ||--o{ organization_users : "🏢 employs"
+    organizations ||--o{ sessions : "🎯 hosts"
 ```
 
 ---
